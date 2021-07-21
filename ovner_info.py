@@ -1,5 +1,6 @@
 from bot_admin import BotAdmin
 from bot_user import BotUser
+from os import environ
 
 _ovner_id = environ['OVNER_ID'] 
 

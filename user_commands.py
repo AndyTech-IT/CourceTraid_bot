@@ -1,4 +1,4 @@
-from .chat_command import Command, Commands_List
+from chat_command import Command, Commands_List
 
 class UserCommand(Command):
 	Name: str

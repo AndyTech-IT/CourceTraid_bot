@@ -12,6 +12,7 @@ from users_manager import Users
 from users_manager import Commands as UsersCommands
 
 import courses_manager
+from os import environ
 
 token = environ['BOT_TOKEN']
 bot = telebot.TeleBot(token)

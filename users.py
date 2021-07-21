@@ -1,4 +1,4 @@
-from .bot_user import BotUser
+from bot_user import BotUser
 
 class Users_List:
 
