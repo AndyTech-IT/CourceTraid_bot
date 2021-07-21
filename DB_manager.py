@@ -1,6 +1,6 @@
 import sqlite3
 
-_db_filename = 'DB.sqlite3'
+_db_filename = 'DB.py'
 
 _user_table_select_query = 	'SELECT ID FROM USER'
 _user_table_insert_query = 	'INSERT INTO USER (ID) ' \
