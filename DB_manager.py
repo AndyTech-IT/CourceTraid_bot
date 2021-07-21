@@ -45,42 +45,51 @@ _course_table_create_query = 	'CREATE TABLE COURSE (' \
 
 
 def GetUsersList():
-	cursor = ConnectToDB()
+	connection = ConnectToDB()
 	try:
-		table = cursor.execute(_user_table_select_query).fetchall()
+		table = connection.cursor().execute(_user_table_select_query).fetchall()
 	except:
-		cursor.execute(_user_table_create_query)
+		connection.cursor().execute(_user_table_create_query)
+		connection.commit()
 		table = ()
 
+	connection.close()
 	return [{'ID': data[0]} for data in table]
 
 def AddUser(user_id):
-	cursor = ConnectToDB()
-	cursor.execute(_user_table_insert_query, (user_id,))
+	connection = ConnectToDB()
+	connection.cursor().execute(_user_table_insert_query, (user_id,))
+	connection.commit()
+	connection.close()
 
 
 
 def GetAdminsList():
-	cursor = ConnectToDB()
+	connection = ConnectToDB()
 	try:
-		table = cursor.execute(_admin_table_select_query).fetchall()
+		table = connection.cursor().execute(_admin_table_select_query).fetchall()
 	except:
-		cursor.execute(_admin_table_create_query)
+		connection.cursor.execute(_admin_table_create_query)
+		connection.commit()
 		table = ()
 
+	connection.close()
 	return [{'ID': data[0]} for data in table]
 
 def AddAdmin(admin_id):
-	cursor = ConnectToDB()
-	cursor.execute(_admin_table_insert_query, (admin_id,))
+	connection = ConnectToDB()
+	connection.cursor().execute(_admin_table_insert_query, (admin_id,))
+	connection.commit()
+	connection.close()
 
 
 def GetCoursesDict():
-	cursor = ConnectToDB()
+	connection = ConnectToDB()
 	try:
-		table = cursor.execute(_course_table_select_query).fetchall()
+		table = connection.cursor().execute(_course_table_select_query).fetchall()
 	except:
-		cursor.execute(_course_table_create_query).fetchall()
+		connection.cursor().execute(_course_table_create_query).fetchall()
+		connection.commit()
 		table = ()
 	courses_dict = {}
 	for data in table:
@@ -96,16 +105,20 @@ def GetCoursesDict():
 			}
 		}
 		courses_dict.update(course_dict)
+	connection.close()
 	return courses_dict
 
 def AddCourse(course):
-	cursor = ConnectToDB()
-	cursor.execute(_course_table_insert_query, (course.Category, course.Title, course.Description, course.Content, course.Image,))
-
+	connection = ConnectToDB()
+	connection.cursor().execute(_course_table_insert_query, (course.Category, course.Title, course.Description, course.Content, course.Image,))
+	connection.commit()
+	connection.close()
 
 def DeleteCourse_byID(id):
-	cursor = ConnectToDB()
-	cursor.execute(_course_table_delete_query, (id,))
+	connection = ConnectToDB()
+	connection.cursor().execute(_course_table_delete_query, (id,))
+	connection.commit()
+	connection.close()
 
 
 def ConnectToDB():
@@ -118,6 +131,6 @@ def ConnectToDB():
 			database="dfa74tvmhupjn0"
 		) as connection:
 			connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-			return connection.cursor()
+			return connection
 	except (Exception, Error) as error:
 		print(error)
