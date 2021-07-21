@@ -6,7 +6,7 @@ _db_filename = 'DB'
 
 _user_table_select_query = 	'SELECT ID FROM USER1'
 _user_table_insert_query = 	'INSERT INTO USER1 (ID) ' \
-							'	VALUES ($s)'
+							'	VALUES (%s)'
 _user_table_create_query =	'CREATE TABLE USER1 (' \
 							'	ID INT NOT NULL,' \
 							'	PRIMARY KEY (ID)' \
@@ -16,7 +16,7 @@ _user_table_create_query =	'CREATE TABLE USER1 (' \
 
 _admin_table_select_query =	'SELECT ID FROM ADMIN1'
 _admin_table_insert_query =	'INSERT INTO ADMIN1 (ID)' \
-							'	VALUES ($s)'
+							'	VALUES (%s)'
 _admin_table_create_query =	'CREATE TABLE ADMIN1 (' \
 							'	ID INT NOT NULL,' \
 							'	PRIMARY KEY (ID)' \
@@ -26,13 +26,13 @@ _admin_table_create_query =	'CREATE TABLE ADMIN1 (' \
 
 _course_table_select_query = 	'SELECT ID, CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE FROM COURSE1'
 _course_table_insert_query = 	'INSERT INTO COURSE1 (CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE)' \
-								'	VALUES ($s, $s, $s, $s, $s)'
+								'	VALUES (%s, %s, %s, %s, %s)'
 
 _course_table_update_query = 	'UPDATE COURSE1 SET' \
-								'	ID = $s, CATEGORY = $s, TITLE = $s, DESCRIPTION = $s, CONTENT = $s, IMAGE = $s' \
-								'	WHERE ID = $s'
+								'	ID = %s, CATEGORY = %s, TITLE = %s, DESCRIPTION = %s, CONTENT = %s, IMAGE = %s' \
+								'	WHERE ID = %s'
 _course_table_delete_query = 	'DELETE FROM COURSE1' \
-								'	WHERE ID = $s'
+								'	WHERE ID = %s'
 _course_table_create_query = 	'CREATE TABLE COURSE1 (' \
 								'	ID SERIAL PRIMARY KEY,' \
 								'	CATEGORY VARCHAR(255) NOT NULL,' \
