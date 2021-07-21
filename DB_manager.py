@@ -46,10 +46,12 @@ _course_table_create_query = 	'CREATE TABLE COURSE (' \
 
 def GetUsersList():
 	connection = ConnectToDB()
+	cursor = connection.cursor()
 	try:
-		table = connection.cursor().execute(_user_table_select_query).fetchall()
+		cursor.execute(_user_table_select_query)
+		table = cursor.fetchall()
 	except:
-		connection.cursor().execute(_user_table_create_query)
+		cursor.execute(_user_table_create_query)
 		connection.commit()
 		table = ()
 
@@ -58,7 +60,8 @@ def GetUsersList():
 
 def AddUser(user_id):
 	connection = ConnectToDB()
-	connection.cursor().execute(_user_table_insert_query, (user_id,))
+	cursor = connection.cursor()
+	cursor.execute(_user_table_insert_query, (user_id,))
 	connection.commit()
 	connection.close()
 
@@ -66,10 +69,12 @@ def AddUser(user_id):
 
 def GetAdminsList():
 	connection = ConnectToDB()
+	cursor = connection.cursor()
 	try:
-		table = connection.cursor().execute(_admin_table_select_query).fetchall()
+		cursor.execute(_admin_table_select_query)
+		table = cursor.fetchall()
 	except:
-		connection.cursor.execute(_admin_table_create_query)
+		cursor.execute(_admin_table_create_query)
 		connection.commit()
 		table = ()
 
@@ -78,17 +83,20 @@ def GetAdminsList():
 
 def AddAdmin(admin_id):
 	connection = ConnectToDB()
-	connection.cursor().execute(_admin_table_insert_query, (admin_id,))
+	cursor = connection.cursor()
+	cursor.execute(_admin_table_insert_query, (admin_id,))
 	connection.commit()
 	connection.close()
 
 
 def GetCoursesDict():
 	connection = ConnectToDB()
+	cursor = connection.cursor()
 	try:
-		table = connection.cursor().execute(_course_table_select_query).fetchall()
+		cursor.execute(_course_table_select_query)
+		table = cursor.fetchall()
 	except:
-		connection.cursor().execute(_course_table_create_query).fetchall()
+		cursor.execute(_course_table_create_query)
 		connection.commit()
 		table = ()
 	courses_dict = {}
@@ -110,13 +118,15 @@ def GetCoursesDict():
 
 def AddCourse(course):
 	connection = ConnectToDB()
-	connection.cursor().execute(_course_table_insert_query, (course.Category, course.Title, course.Description, course.Content, course.Image,))
+	cursor = connection.cursor()
+	cursor.execute(_course_table_insert_query, (course.Category, course.Title, course.Description, course.Content, course.Image,))
 	connection.commit()
 	connection.close()
 
 def DeleteCourse_byID(id):
 	connection = ConnectToDB()
-	connection.cursor().execute(_course_table_delete_query, (id,))
+	cursor = connection.cursor()
+	cursor.execute(_course_table_delete_query, (id,))
 	connection.commit()
 	connection.close()
 
