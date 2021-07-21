@@ -111,26 +111,13 @@ def DeleteCourse_byID(id):
 def ConnectToDB():
 	try:
 		with psycopg2.connect(
-			user="postgres",
-			password="1111",
-			host="127.0.0.1",
+			user="khjhfboutmiizc",
+			password="390f718a8b0e583cb6fe6120fbb479e364690b6f9140f4284791553d3b1f5574",
+			host="ec2-79-125-30-28.eu-west-1.compute.amazonaws.com",
 			port="5432",
-			database="postgres_db"
+			database="dfa74tvmhupjn0"
 		) as connection:
 			connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 			return connection.cursor()
 	except (Exception, Error) as error:
 		print(error)
-		try:
-			with psycopg2.connect(
-				user="postgres",
-				password="1111",
-				host="127.0.0.1",
-				port="5432"
-			) as connection:
-				connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-				sql_create_database = 'create database postgres_db'
-				cursor.execute(sql_create_database)
-				return connection.cursor()
-		except (Exception, Error) as error:
-			print(error)
