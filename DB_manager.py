@@ -1,6 +1,8 @@
-import sqlite3
+import psycopg2
+from psycopg2 import Error
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-_db_filename = 'DB.py'
+_db_filename = 'DB'
 
 _user_table_select_query = 	'SELECT ID FROM USER'
 _user_table_insert_query = 	'INSERT INTO USER (ID) ' \
@@ -43,43 +45,38 @@ _course_table_create_query = 	'CREATE TABLE COURSE (' \
 
 
 def GetUsersList():
-	with sqlite3.connect(_db_filename) as con:
-		cursor = con.cursor()
-		try:
-			table = cursor.execute(_user_table_select_query).fetchall()
-		except:
-			cursor.execute(_user_table_create_query)
-			table = ()
+	cursor = ConnectToDB()
+	try:
+		table = cursor.execute(_user_table_select_query).fetchall()
+	except:
+		cursor.execute(_user_table_create_query)
+		table = ()
 
 	return [{'ID': data[0]} for data in table]
 
 def AddUser(user_id):
-	with sqlite3.connect(_db_filename) as con:
-		cursor = con.cursor()
-		cursor.execute(_user_table_insert_query, (user_id,))
+	cursor = ConnectToDB()
+	cursor.execute(_user_table_insert_query, (user_id,))
 
 
 
 def GetAdminsList():
-	with sqlite3.connect(_db_filename) as con:
-		cursor = con.cursor()
-		try:
-			table = cursor.execute(_admin_table_select_query).fetchall()
-		except:
-			cursor.execute(_admin_table_create_query)
-			table = ()
+	cursor = ConnectToDB()
+	try:
+		table = cursor.execute(_admin_table_select_query).fetchall()
+	except:
+		cursor.execute(_admin_table_create_query)
+		table = ()
 
 	return [{'ID': data[0]} for data in table]
 
 def AddAdmin(admin_id):
-	with sqlite3.connect(_db_filename) as con:
-		cursor = con.cursor()
-		cursor.execute(_admin_table_insert_query, (admin_id,))
+	cursor = ConnectToDB()
+	cursor.execute(_admin_table_insert_query, (admin_id,))
 
 
 def GetCoursesDict():
-	with sqlite3.connect(_db_filename) as con:
-		cursor = con.cursor()
+	cursor = ConnectToDB()
 	try:
 		table = cursor.execute(_course_table_select_query).fetchall()
 	except:
@@ -102,23 +99,38 @@ def GetCoursesDict():
 	return courses_dict
 
 def AddCourse(course):
-	with sqlite3.connect(_db_filename) as con:
-		cursor = con.cursor()
-		cursor.execute(_course_table_insert_query, (course.Category, course.Title, course.Description, course.Content, course.Image,))
+	cursor = ConnectToDB()
+	cursor.execute(_course_table_insert_query, (course.Category, course.Title, course.Description, course.Content, course.Image,))
 
-
-def Try_UpdateCourse(old_id, course, new_id=None):
-	if new_id is None:
-		new_id = old_id
-	with sqlite3.connect(_db_filename) as con:
-		cursor = con.cursor()
-		try:
-			cursor.execute(_course_table_update_query, (new_id, course.Category, course.Title, course.Description, course.Content, course.Image, old_id))
-			return True
-		except:
-			return False
 
 def DeleteCourse_byID(id):
-	with sqlite3.connect(_db_filename) as con:
-		cursor = con.cursor()
-		cursor.execute(_course_table_delete_query, (id,))
+	cursor = ConnectToDB()
+	cursor.execute(_course_table_delete_query, (id,))
+
+
+def ConnectToDB():
+	try:
+		with psycopg2.connect(
+			user="postgres",
+			password="1111",
+			host="127.0.0.1",
+			port="5432",
+			database="postgres_db"
+		) as connection:
+			connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+			return connection.cursor()
+	except (Exception, Error) as error:
+		print(error)
+		try:
+			with psycopg2.connect(
+				user="postgres",
+				password="1111",
+				host="127.0.0.1",
+				port="5432"
+			) as connection:
+				connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+				sql_create_database = 'create database postgres_db'
+	    		cursor.execute(sql_create_database)
+				return connection.cursor()
+		except (Exception, Error) as error:
+			print(error)
