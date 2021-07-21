@@ -4,36 +4,36 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 _db_filename = 'DB'
 
-_user_table_select_query = 	'SELECT ID FROM `USER`'
-_user_table_insert_query = 	'INSERT INTO `USER` (ID) ' \
+_user_table_select_query = 	'SELECT ID FROM USER1'
+_user_table_insert_query = 	'INSERT INTO USER1 (ID) ' \
 							'	VALUES (?)'
-_user_table_create_query =	'CREATE TABLE `USER` (' \
+_user_table_create_query =	'CREATE TABLE USER1 (' \
 							'	ID INT NOT NULL,' \
 							'	PRIMARY KEY (ID)' \
 							');'
 
 
 
-_admin_table_select_query =	'SELECT ID FROM `ADMIN`'
-_admin_table_insert_query =	'INSERT INTO `ADMIN` (ID)' \
+_admin_table_select_query =	'SELECT ID FROM ADMIN1'
+_admin_table_insert_query =	'INSERT INTO ADMIN1 (ID)' \
 							'	VALUES (?)'
-_admin_table_create_query =	'CREATE TABLE `ADMIN` (' \
+_admin_table_create_query =	'CREATE TABLE ADMIN1 (' \
 							'	ID INT NOT NULL,' \
 							'	PRIMARY KEY (ID)' \
 							');'
 
 
 
-_course_table_select_query = 	'SELECT ID, CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE FROM `COURSE`'
-_course_table_insert_query = 	'INSERT INTO `COURSE` (CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE)' \
+_course_table_select_query = 	'SELECT ID, CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE FROM COURSE1'
+_course_table_insert_query = 	'INSERT INTO COURSE1 (CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE)' \
 								'	VALUES (?, ?, ?, ?, ?)'
 
-_course_table_update_query = 	'UPDATE `COURSE` SET' \
+_course_table_update_query = 	'UPDATE COURSE1 SET' \
 								'	ID = ?, CATEGORY = ?, TITLE = ?, DESCRIPTION = ?, CONTENT = ?, IMAGE = ?' \
 								'	WHERE ID = ?'
-_course_table_delete_query = 	'DELETE FROM `COURSE`' \
+_course_table_delete_query = 	'DELETE FROM COURSE1' \
 								'	WHERE ID = ?'
-_course_table_create_query = 	'CREATE TABLE `COURSE` (' \
+_course_table_create_query = 	'CREATE TABLE COURSE1 (' \
 								'	ID INTEGER PRIMARY KEY AUTOINCREMENT,' \
 								'	CATEGORY VARCHAR(255) NOT NULL,' \
 								'	TITLE VARCHAR(255) NOT NULL,' \
@@ -133,14 +133,14 @@ def DeleteCourse_byID(id):
 
 def ConnectToDB():
 	try:
-		with psycopg2.connect(
+		connection = psycopg2.connect(
 			user="khjhfboutmiizc",
 			password="390f718a8b0e583cb6fe6120fbb479e364690b6f9140f4284791553d3b1f5574",
 			host="ec2-79-125-30-28.eu-west-1.compute.amazonaws.com",
 			port="5432",
 			database="dfa74tvmhupjn0"
-		) as connection:
-			connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-			return connection
+		)
+		connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+		return connection
 	except (Exception, Error) as error:
 		print(error)
