@@ -1,7 +1,7 @@
-from data import DB_manager 
+import DB_manager 
 import requests
 from admins_manager import Admins
-from course.course import Courses_List, Course
+from course import Courses_List, Course
 
 Courses = None
 

@@ -1,4 +1,4 @@
-from .bot_admin import BotAdmin
+from bot_admin import BotAdmin
 
 class Admins_List:
 	

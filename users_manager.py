@@ -1,7 +1,7 @@
-from user import users
-from user.bot_user import BotUser
-from command.user_commands import UserCommands
-from data import DB_manager
+import users
+bot_user import BotUser
+from user_commands import UserCommands
+import DB_manager
 from ovner_info import Ovner_User
 
 Users = None

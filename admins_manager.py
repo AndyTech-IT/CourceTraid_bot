@@ -1,7 +1,7 @@
-from admin import admins
-from admin.bot_admin import BotAdmin
-from command.admin_commands import AdminCommands
-from data import DB_manager
+import admins
+from bot_admin import BotAdmin
+from admin_commands import AdminCommands
+import DB_manager
 from ovner_info import Ovner_Admin
 
 Admins = None
