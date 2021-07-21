@@ -34,7 +34,7 @@ _course_table_update_query = 	'UPDATE COURSE1 SET' \
 _course_table_delete_query = 	'DELETE FROM COURSE1' \
 								'	WHERE ID = ?'
 _course_table_create_query = 	'CREATE TABLE COURSE1 (' \
-								'	ID INTEGER PRIMARY KEY SERIAL,' \
+								'	ID SERIAL PRIMARY KEY,' \
 								'	CATEGORY VARCHAR(255) NOT NULL,' \
 								'	TITLE VARCHAR(255) NOT NULL,' \
 								'	DESCRIPTION VARCHAR(255) NOT NULL,' \
