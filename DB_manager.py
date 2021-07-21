@@ -130,7 +130,7 @@ def ConnectToDB():
 			) as connection:
 				connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 				sql_create_database = 'create database postgres_db'
-	    		cursor.execute(sql_create_database)
+				cursor.execute(sql_create_database)
 				return connection.cursor()
 		except (Exception, Error) as error:
 			print(error)
