@@ -1,5 +1,5 @@
 import users
-bot_user import BotUser
+from bot_user import BotUser
 from user_commands import UserCommands
 import DB_manager
 from ovner_info import Ovner_User
