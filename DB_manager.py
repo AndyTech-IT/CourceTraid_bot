@@ -4,36 +4,36 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 _db_filename = 'DB'
 
-_user_table_select_query = 	'SELECT ID FROM USER'
-_user_table_insert_query = 	'INSERT INTO USER (ID) ' \
+_user_table_select_query = 	'SELECT ID FROM `USER`'
+_user_table_insert_query = 	'INSERT INTO `USER` (ID) ' \
 							'	VALUES (?)'
-_user_table_create_query =	'CREATE TABLE USER (' \
+_user_table_create_query =	'CREATE TABLE `USER` (' \
 							'	ID INT NOT NULL,' \
 							'	PRIMARY KEY (ID)' \
 							');'
 
 
 
-_admin_table_select_query =	'SELECT ID FROM ADMIN'
-_admin_table_insert_query =	'INSERT INTO ADMIN (ID)' \
+_admin_table_select_query =	'SELECT ID FROM `ADMIN`'
+_admin_table_insert_query =	'INSERT INTO `ADMIN` (ID)' \
 							'	VALUES (?)'
-_admin_table_create_query =	'CREATE TABLE ADMIN (' \
+_admin_table_create_query =	'CREATE TABLE `ADMIN` (' \
 							'	ID INT NOT NULL,' \
 							'	PRIMARY KEY (ID)' \
 							');'
 
 
 
-_course_table_select_query = 	'SELECT ID, CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE FROM COURSE'
-_course_table_insert_query = 	'INSERT INTO COURSE (CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE)' \
+_course_table_select_query = 	'SELECT ID, CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE FROM `COURSE`'
+_course_table_insert_query = 	'INSERT INTO `COURSE` (CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE)' \
 								'	VALUES (?, ?, ?, ?, ?)'
 
-_course_table_update_query = 	'UPDATE COURSE SET' \
+_course_table_update_query = 	'UPDATE `COURSE` SET' \
 								'	ID = ?, CATEGORY = ?, TITLE = ?, DESCRIPTION = ?, CONTENT = ?, IMAGE = ?' \
 								'	WHERE ID = ?'
-_course_table_delete_query = 	'DELETE FROM COURSE' \
+_course_table_delete_query = 	'DELETE FROM `COURSE`' \
 								'	WHERE ID = ?'
-_course_table_create_query = 	'CREATE TABLE COURSE (' \
+_course_table_create_query = 	'CREATE TABLE `COURSE` (' \
 								'	ID INTEGER PRIMARY KEY AUTOINCREMENT,' \
 								'	CATEGORY VARCHAR(255) NOT NULL,' \
 								'	TITLE VARCHAR(255) NOT NULL,' \
