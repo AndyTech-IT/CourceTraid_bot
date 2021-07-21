@@ -39,7 +39,7 @@ _course_table_create_query = 	'CREATE TABLE COURSE1 (' \
 								'	TITLE VARCHAR(255) NOT NULL,' \
 								'	DESCRIPTION VARCHAR(255) NOT NULL,' \
 								'	CONTENT VARCHAR(255) NOT NULL,' \
-								'	IMAGE MEDIUMBLOB NOT NULL' \
+								'	IMAGE bytea NOT NULL' \
 								');'
 
 
