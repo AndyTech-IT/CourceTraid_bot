@@ -56,6 +56,7 @@ def GetUsersList():
 		table = ()
 
 	connection.close()
+	print(table)
 	return [{'ID': data[0]} for data in table]
 
 def AddUser(user_id):
@@ -78,6 +79,7 @@ def GetAdminsList():
 		connection.commit()
 		table = ()
 
+	print(table)
 	connection.close()
 	return [{'ID': data[0]} for data in table]
 
@@ -114,6 +116,7 @@ def GetCoursesDict():
 		}
 		courses_dict.update(course_dict)
 	connection.close()
+	print(table)
 	return courses_dict
 
 def AddCourse(course):
