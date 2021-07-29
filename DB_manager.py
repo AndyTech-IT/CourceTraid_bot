@@ -11,7 +11,8 @@ _db_filename = 'DB'
 
 _user_table_select_query = 	'SELECT ID FROM BOT_USER'
 _user_table_insert_query = 	'INSERT INTO BOT_USER (ID) ' \
-							'	VALUES (%s)'
+							'	VALUES (%s)' \
+							'RETURNING ID'
 _user_table_create_query =	'CREATE TABLE BOT_USER (' \
 							'	ID INTEGER PRIMARY KEY' \
 							');'
@@ -20,7 +21,8 @@ _user_table_create_query =	'CREATE TABLE BOT_USER (' \
 
 _admin_table_select_query =	'SELECT ID FROM BOT_ADMIN'
 _admin_table_insert_query =	'INSERT INTO BOT_ADMIN (ID)' \
-							'	VALUES (%s)'
+							'	VALUES (%s)' \
+							'RETURNING ID'
 _admin_table_create_query =	'CREATE TABLE BOT_ADMIN (' \
 							'	ID INTEGER PRIMARY KEY' \
 							');'
@@ -32,7 +34,8 @@ _course_table_select_query = \
 
 _course_table_insert_query = \
 '''INSERT INTO COURSE (CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE)
-	VALUES (%s, %s, %s, %s, %s)'''
+	VALUES (%s, %s, %s, %s, %s)
+	RETURNING ID'''
 
 _course_table_update_query = \
 '''UPDATE COURSE SET
@@ -60,7 +63,8 @@ _answer_table_select_query = \
 
 _answer_table_insert_query = \
 '''INSERT INTO BOT_ANSWER (NAME, TEXT)
-	VALUES (%s, %s)'''
+	VALUES (%s, %s)
+RETURNING NAME'''
 
 _answer_table_update_query = \
 '''UPDATE BOT_ANSWER SET
