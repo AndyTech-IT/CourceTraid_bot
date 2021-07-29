@@ -52,9 +52,15 @@ def AddCourseFromBuffer(message):
 		course_dict['IMAGE']
 	)
 
-	DB_manager.AddCourse(course)
+	id = DB_manager.AddCourse(course)
 	Admins[message.from_user.id].Dialog_Buffer = None
 	UpdateCourses()
+	return Courses.GetCourse_ByID(id)
+
+def GetCourse_By_Callback(callback):
+	global Courses
+	course_id = int(callback.data.rpartition(' ')[2])
+	return Courses.GetCourse_ByID(course_id)
 
 def DeleteCourse(callback):
 	global Courses

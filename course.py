@@ -12,7 +12,9 @@ class Course:
 		self.Content = content
 		self.Image = image
 		self.ID = id
-
+		
+	def GetInfo(self):
+		return f'ID: {self.ID:>05d}| "{self.Title}" - {self.Description}\n'
 	pass
 
 class Courses_List:
@@ -62,17 +64,11 @@ class Courses_List:
 		else:
 			return False
 
-	def GetCourses_InfoList(self):
-		info_list = []
-		for category in self._coursesid_by_category_dict:
-			category_courses_info = ''
-			for id in self._coursesid_by_category_dict[category]:
-				course = self._courses_by_id_dict[id]
-				category_courses_info += f'ID: {id:>05d}| "{course.Title}" - {course.Description}\n'
-
-			info_list.append(f'Категория: "{category}"')
-			info_list.append(category_courses_info)
-		return info_list
+	def GetCategory_CoursesList(self, category):
+		#f'ID: {id:>05d}| "{course.Title}" - {course.Description}\n'
+		category_courses = [self._courses_by_id_dict[id] for id in self._coursesid_by_category_dict[category]]
+			
+		return category_courses
 
 	def GetCourses(self):
 		return [self._courses_by_id_dict[id] for id in self._courses_by_id_dict]

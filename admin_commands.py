@@ -30,11 +30,6 @@ class AdminCommands(Commands_List):
 			'Список всех курсов хранящихся в базе данных',
 			'Введите @command для перехода в соответствующее меню'
 		)
-		self.Course = AdminCommand(
-			'course', 
-			'Меню настройки курса',
-			'Введите @command <course id>, где <course id> идентификатор курса'
-		)
 		self.AddCourse = AdminCommand(
 			'add_course',
 			'Добавление нового курса в базу данных',
@@ -42,7 +37,7 @@ class AdminCommands(Commands_List):
 		)
 		self.Contacts = AdminCommand(
 			'contacts', 
-			'Меню настройки способов обратной связи пользователя с администрацией (e-main, номер телефона и т.п.)',
+			'Меню настройки способов обратной связи пользователя с администрацией (e-mail, номер телефона и т.п.)',
 			'Введите @command для перехода в соответствующее меню'
 		)
 		self.Feedback = AdminCommand(
@@ -75,6 +70,26 @@ class AdminCommands(Commands_List):
 			'Комманда для выхода из панели администратора',
 			'Введите @command для перехода в панель пользователя'
 		)
+		self.SetNewAnswer = AdminCommand(
+			'set_answer',
+			'Комманда для изменения текста сообщения бота',
+			'Введите @command <answer name> <new text>, где <answer name> кодовое название сообщения'
+		)
+		self.GetAnswers = AdminCommand(
+			'get_answers',
+			'Комманда для получения json файла содержащего все сообщения бота, доступные для редактирования, а <new text> новый текст сообщения',
+			'Введите @command для получения конфигурационного файла'
+		)
+		self.SetAnswers = AdminCommand(
+			'set_answers',
+			'Комманда для отметки сообщеия с json файлом содержащим сообщения бота',
+			'Прикрепите файл json, и в поле Caption укажите @command'
+		)
+		self.SetDefaultAnswers = AdminCommand(
+			'default_answers',
+			'Устанавливает текст сообщений бота в стандартный вид, установленный разработчиком',
+			'Введите @command для сброса всех сообщений бота к стандартным'
+		)
 
 		commands = [
 			self.Help,
@@ -85,11 +100,14 @@ class AdminCommands(Commands_List):
 			self.AddCourse,
 			self.AddAdmin,
 			self.Courses,
-			self.Course,
 			self.Feedback,
 			self.Contacts,
 			self.Notifications,
 			self.Notification,
+			self.SetNewAnswer,
+			self.GetAnswers,
+			self.SetAnswers,
+			self.SetDefaultAnswers,
 		]
 
 		super().__init__(commands)

@@ -13,4 +13,7 @@ class Users_List:
 	def Is_Users_Message(self, message):
 		return message.from_user.id in self._users_dict
 
+	def __iter__(self):
+		for id in self._users_dict:
+			yield self._users_dict[id]
 	pass

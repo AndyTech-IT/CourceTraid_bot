@@ -14,6 +14,9 @@ def UpdateUsers():
 	for data in users_list:
 		users_dict.update({data['ID']: BotUser(data['ID'])})
 
+	if Ovner_User.ID not in users_dict:
+		DB_manager.AddUser(Ovner_User.ID)
+
 	Users = users.Users_List(Ovner_User, users_dict)
 
 def Try_AddUser(message):
@@ -25,5 +28,6 @@ def Try_AddUser(message):
 	DB_manager.AddUser(user_data.id)
 	UpdateUsers()
 	return True
+
 
 UpdateUsers()

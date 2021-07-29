@@ -14,6 +14,9 @@ def UpdateAdmins():
 	for data in admins_list:
 		admins_dict.update({data['ID']: BotAdmin(data['ID'])})
 
+	if Ovner_Admin.ID not in admins_dict:
+		DB_manager.AddAdmin(Ovner_Admin.ID)
+
 	Admins = admins.Admins_List(Ovner_Admin, admins_dict)
 
 def Begin_AddAdmin(message):
@@ -29,5 +32,6 @@ def Try_AddAdmin(message):
 		return True
 	except:
 		return False
+	
 
 UpdateAdmins()

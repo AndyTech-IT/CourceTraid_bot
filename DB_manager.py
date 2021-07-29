@@ -2,104 +2,147 @@ import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
+from os import environ
+
+import sqlite3
+import json
+
 _db_filename = 'DB'
 
-_user_table_select_query = 	'SELECT ID FROM USER1'
-_user_table_insert_query = 	'INSERT INTO USER1 (ID) ' \
-							'	VALUES (%s)'
-_user_table_create_query =	'CREATE TABLE USER1 (' \
-							'	ID INT NOT NULL,' \
-							'	PRIMARY KEY (ID)' \
+_user_table_select_query = 	'SELECT ID FROM BOT_USER'
+_user_table_insert_query = 	'INSERT INTO BOT_USER (ID) ' \
+							'	VALUES (?)'
+_user_table_create_query =	'CREATE TABLE BOT_USER (' \
+							'	ID INTEGER PRIMARY KEY' \
 							');'
 
 
 
-_admin_table_select_query =	'SELECT ID FROM ADMIN1'
-_admin_table_insert_query =	'INSERT INTO ADMIN1 (ID)' \
-							'	VALUES (%s)'
-_admin_table_create_query =	'CREATE TABLE ADMIN1 (' \
-							'	ID INT NOT NULL,' \
-							'	PRIMARY KEY (ID)' \
+_admin_table_select_query =	'SELECT ID FROM BOT_ADMIN'
+_admin_table_insert_query =	'INSERT INTO BOT_ADMIN (ID)' \
+							'	VALUES (?)'
+_admin_table_create_query =	'CREATE TABLE BOT_ADMIN (' \
+							'	ID INTEGER PRIMARY KEY' \
 							');'
 
 
 
-_course_table_select_query = 	'SELECT ID, CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE FROM COURSE1'
-_course_table_insert_query = 	'INSERT INTO COURSE1 (CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE)' \
-								'	VALUES (%s, %s, %s, %s, %s)'
+_course_table_select_query = \
+'SELECT ID, CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE FROM COURSE'
 
-_course_table_update_query = 	'UPDATE COURSE1 SET' \
-								'	ID = %s, CATEGORY = %s, TITLE = %s, DESCRIPTION = %s, CONTENT = %s, IMAGE = %s' \
-								'	WHERE ID = %s'
-_course_table_delete_query = 	'DELETE FROM COURSE1' \
-								'	WHERE ID = %s'
-_course_table_create_query = 	'CREATE TABLE COURSE1 (' \
-								'	ID SERIAL PRIMARY KEY,' \
-								'	CATEGORY VARCHAR(255) NOT NULL,' \
-								'	TITLE VARCHAR(255) NOT NULL,' \
-								'	DESCRIPTION VARCHAR(255) NOT NULL,' \
-								'	CONTENT VARCHAR(255) NOT NULL,' \
-								'	IMAGE bytea NOT NULL' \
-								');'
+_course_table_insert_query = \
+'''INSERT INTO COURSE (CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE)
+	VALUES (?, ?, ?, ?, ?)'''
+
+_course_table_update_query = \
+'''UPDATE COURSE SET
+	ID = ?, CATEGORY = ?, TITLE = ?, DESCRIPTION = ?, CONTENT = ?, IMAGE = ?
+	WHERE ID = ?;'''
+
+_course_table_delete_query =  \
+'''DELETE FROM COURSE
+	WHERE ID = ?'''
+
+_course_table_create_query = \
+'''CREATE TABLE COURSE (	
+	--ID SERIAL PRIMARY KEY, 			
+	ID INTEGER PRIMARY KEY AUTOINCREMENT,
+	CATEGORY VARCHAR(255) NOT NULL,
+	TITLE VARCHAR(255) NOT NULL,
+	DESCRIPTION VARCHAR(255) NOT NULL,
+	CONTENT VARCHAR(255) NOT NULL,
+	IMAGE bytea NOT NULL
+);'''
+
+
+_answer_table_select_query = \
+'SELECT NAME, TEXT FROM BOT_ANSWER'
+
+_answer_table_insert_query = \
+'''INSERT INTO BOT_ANSWER (NAME, TEXT)
+	VALUES (?, ?)'''
+
+_answer_table_update_query = \
+'''UPDATE BOT_ANSWER SET
+	TEXT = ?
+	WHERE NAME = ?'''
+
+_answer_table_create_query = \
+'''CREATE TABLE BOT_ANSWER (
+	NAME VARCHAR(40) PRIMARY KEY,
+	TEXT VARCHAR(255) NOT NULL 
+);'''
 
 
 
-def GetUsersList():
-	connection = ConnectToDB()
-	cursor = connection.cursor()
+def GetSQLite3_Connection():
+	return sqlite3.connect('DB.sqlite3')
+
+def GetPostgress_Connection():
+	connection = psycopg2.connect(
+		user=environ['DB_USER'],
+		password=environ['DB_PASSWORD'],
+		host=environ['DB_HOST'],
+		port=environ['DB_PORT'],
+		database=environ['DB']
+	)
+	connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+	return connection
+
+def ConnectToDB(func):
+	def wrapper(*args, **kvargs):
+		connection = GetPostgress_Connection()
+		cursor = connection.cursor()
+		result = func(cursor, *args, **kvargs)
+		connection.commit()
+		connection.close()
+		return result
+	return wrapper
+
+
+
+@ConnectToDB
+def GetUsersList(cursor):
 	try:
 		cursor.execute(_user_table_select_query)
 		table = cursor.fetchall()
 	except:
 		cursor.execute(_user_table_create_query)
-		connection.commit()
 		table = ()
 
-	connection.close()
-	print(table)
 	return [{'ID': data[0]} for data in table]
 
-def AddUser(user_id):
-	connection = ConnectToDB()
-	cursor = connection.cursor()
+@ConnectToDB
+def AddUser(cursor, user_id):
 	cursor.execute(_user_table_insert_query, (user_id,))
-	connection.commit()
-	connection.close()
+	return cursor.lastrowid
 
 
 
-def GetAdminsList():
-	connection = ConnectToDB()
-	cursor = connection.cursor()
+@ConnectToDB
+def GetAdminsList(cursor):
 	try:
 		cursor.execute(_admin_table_select_query)
 		table = cursor.fetchall()
 	except:
 		cursor.execute(_admin_table_create_query)
-		connection.commit()
 		table = ()
 
-	print(table)
-	connection.close()
 	return [{'ID': data[0]} for data in table]
 
-def AddAdmin(admin_id):
-	connection = ConnectToDB()
-	cursor = connection.cursor()
+@ConnectToDB
+def AddAdmin(cursor, admin_id):
 	cursor.execute(_admin_table_insert_query, (admin_id,))
-	connection.commit()
-	connection.close()
+	return cursor.lastrowid
 
 
-def GetCoursesDict():
-	connection = ConnectToDB()
-	cursor = connection.cursor()
+@ConnectToDB
+def GetCoursesDict(cursor):
 	try:
 		cursor.execute(_course_table_select_query)
 		table = cursor.fetchall()
 	except:
 		cursor.execute(_course_table_create_query)
-		connection.commit()
 		table = ()
 	courses_dict = {}
 	for data in table:
@@ -115,35 +158,50 @@ def GetCoursesDict():
 			}
 		}
 		courses_dict.update(course_dict)
-	connection.close()
-	print(table)
 	return courses_dict
 
-def AddCourse(course):
-	connection = ConnectToDB()
-	cursor = connection.cursor()
+@ConnectToDB
+def AddCourse(cursor, course):
 	cursor.execute(_course_table_insert_query, (course.Category, course.Title, course.Description, course.Content, course.Image,))
-	connection.commit()
-	connection.close()
-
-def DeleteCourse_byID(id):
-	connection = ConnectToDB()
-	cursor = connection.cursor()
+	return cursor.lastrowid
+	
+@ConnectToDB
+def DeleteCourse_byID(cursor, id):
 	cursor.execute(_course_table_delete_query, (id,))
-	connection.commit()
-	connection.close()
 
 
-def ConnectToDB():
+
+@ConnectToDB
+def GetAnswers(cursor):
 	try:
-		connection = psycopg2.connect(
-			user="khjhfboutmiizc",
-			password="390f718a8b0e583cb6fe6120fbb479e364690b6f9140f4284791553d3b1f5574",
-			host="ec2-79-125-30-28.eu-west-1.compute.amazonaws.com",
-			port="5432",
-			database="dfa74tvmhupjn0"
-		)
-		connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-		return connection
-	except (Exception, Error) as error:
-		print(error)
+		cursor.execute(_answer_table_select_query)
+		table = cursor.fetchall()
+		answers_dict = {}
+		for row in table:
+			answers_dict.update({row[0]: row[1]}) 
+	except:
+		cursor.execute(_answer_table_create_query)
+		answers_dict = LoadDefault()
+	return answers_dict
+
+@ConnectToDB
+def LoadDefault(cursor):
+	default_answers_file = 'default_answers.json'
+	with open(default_answers_file, encoding='utf-8') as file:
+		data = file.read()
+		answers_dict = json.loads(data)
+	UpdateAllAnswers(answers_dict)
+	return answers_dict
+
+@ConnectToDB
+def UpdateAllAnswers(cursor, answers_dict):
+	for name in answers_dict:
+		text = answers_dict[name]
+		UpdateAnswer(name, text)
+		
+@ConnectToDB
+def UpdateAnswer(cursor, name, new_text):
+	try:
+		cursor.execute(_answer_table_insert_query, (name, new_text,))
+	except:
+		cursor.execute(_answer_table_update_query, (new_text, name,))
