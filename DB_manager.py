@@ -11,7 +11,7 @@ _db_filename = 'DB'
 
 _user_table_select_query = 	'SELECT ID FROM BOT_USER'
 _user_table_insert_query = 	'INSERT INTO BOT_USER (ID) ' \
-							'	VALUES (?)'
+							'	VALUES (%s)'
 _user_table_create_query =	'CREATE TABLE BOT_USER (' \
 							'	ID INTEGER PRIMARY KEY' \
 							');'
@@ -20,7 +20,7 @@ _user_table_create_query =	'CREATE TABLE BOT_USER (' \
 
 _admin_table_select_query =	'SELECT ID FROM BOT_ADMIN'
 _admin_table_insert_query =	'INSERT INTO BOT_ADMIN (ID)' \
-							'	VALUES (?)'
+							'	VALUES (%s)'
 _admin_table_create_query =	'CREATE TABLE BOT_ADMIN (' \
 							'	ID INTEGER PRIMARY KEY' \
 							');'
@@ -32,16 +32,16 @@ _course_table_select_query = \
 
 _course_table_insert_query = \
 '''INSERT INTO COURSE (CATEGORY, TITLE, DESCRIPTION, CONTENT, IMAGE)
-	VALUES (?, ?, ?, ?, ?)'''
+	VALUES (%s, %s, %s, %s, %s)'''
 
 _course_table_update_query = \
 '''UPDATE COURSE SET
-	ID = ?, CATEGORY = ?, TITLE = ?, DESCRIPTION = ?, CONTENT = ?, IMAGE = ?
-	WHERE ID = ?;'''
+	ID = %s, CATEGORY = %s, TITLE = %s, DESCRIPTION = %s, CONTENT = %s, IMAGE = %s
+	WHERE ID = %s;'''
 
 _course_table_delete_query =  \
 '''DELETE FROM COURSE
-	WHERE ID = ?'''
+	WHERE ID = %s'''
 
 _course_table_create_query = \
 '''CREATE TABLE COURSE (	
@@ -60,12 +60,12 @@ _answer_table_select_query = \
 
 _answer_table_insert_query = \
 '''INSERT INTO BOT_ANSWER (NAME, TEXT)
-	VALUES (?, ?)'''
+	VALUES (%s, %s)'''
 
 _answer_table_update_query = \
 '''UPDATE BOT_ANSWER SET
-	TEXT = ?
-	WHERE NAME = ?'''
+	TEXT = %s
+	WHERE NAME = %s'''
 
 _answer_table_create_query = \
 '''CREATE TABLE BOT_ANSWER (
