@@ -115,7 +115,7 @@ def GetUsersList(cursor):
 @ConnectToDB
 def AddUser(cursor, user_id):
 	cursor.execute(_user_table_insert_query, (user_id,))
-	return cursor.lastrowid
+	return cursor.fetchone()[0] #cursor.lastrowid
 
 
 
@@ -133,7 +133,7 @@ def GetAdminsList(cursor):
 @ConnectToDB
 def AddAdmin(cursor, admin_id):
 	cursor.execute(_admin_table_insert_query, (admin_id,))
-	return cursor.lastrowid
+	return cursor.fetchone()[0] #cursor.lastrowid
 
 
 @ConnectToDB
@@ -163,7 +163,7 @@ def GetCoursesDict(cursor):
 @ConnectToDB
 def AddCourse(cursor, course):
 	cursor.execute(_course_table_insert_query, (course.Category, course.Title, course.Description, course.Content, course.Image,))
-	return cursor.lastrowid
+	return cursor.fetchone()[0] #cursor.lastrowid
 	
 @ConnectToDB
 def DeleteCourse_byID(cursor, id):
